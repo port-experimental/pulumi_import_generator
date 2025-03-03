@@ -37,32 +37,32 @@ async function main() {
     await Promise.all([
         generateImportFile('import_actions.json', actions.map(action => ({
             type: 'port:index/action:Action',
-            name: action.title,
+            name: action.identifier,
             id: action.identifier
         }))),
         generateImportFile('import_blueprints.json', blueprints.map(blueprint => ({
             type: 'port:index/blueprint:Blueprint',
-            name: blueprint.title,
+            name: blueprint.identifier,
             id: blueprint.identifier
         }))),
         generateImportFile('import_scorecards.json', scorecards.map(scorecard => ({
             type: 'port:index/scorecard:Scorecard',
-            name: scorecard.title,
-            id: scorecard.identifier
+            name: scorecard.identifier,
+            id: `${scorecard.blueprint}:${scorecard.identifier}`
         }))),
         generateImportFile('import_integrations.json', integrations.map(integration => ({
             type: 'port:index/integration:Integration',
-            name: integration.title,
+            name: integration.identifier,
             id: integration.identifier
         }))),
         generateImportFile('import_webhooks.json', webhooks.map(webhook => ({
             type: 'port:index/webhook:Webhook',
-            name: webhook.title,
+            name: webhook.identifier,
             id: webhook.identifier
         }))),
         generateImportFile('import_pages.json', pages.map(page => ({
             type: 'port:index/page:Page',
-            name: page.title,
+            name: page.identifier,
             id: page.identifier
         })))
     ]);
