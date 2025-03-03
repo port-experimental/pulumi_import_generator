@@ -1,4 +1,4 @@
-# Terraform Import Generator
+# Pulumi Import Generator
 
 ## Usage
 
@@ -15,49 +15,17 @@ export PORT_BETA_FEATURES_ENABLED=true # this is required if you want to export 
 bun run main.ts
 ```
 
-3. You now have all the import statements in `*.tf` - take a look
+3. You now have all the import resources in `*.json` - take a look
 
 ```
 ls *.tf
-cat blueprints.tf
+cat import_blueprints.json
 ```
 
-4. Now run terraform to import
+4. Now run pulumi import
 
 ```
-terraform plan -generate-config-out=generated.tf
-```
-
-## Applying
-
-1. Now update your env vars to point to the new target org
-
-2. If you have relations between your blueprints, you will need to make sure terraform creates them in a sensible order, or else it will try to create all blueprints at once and there will be issues about blueprints not being found. Create `depends_on` statements for each dependency from left to right
-
-```
-resource "port_blueprint" "repository" {
-  provider = port-labs
-  depends_on = [port_blueprint.service]
-  ...
-  relations = {
-    service = {
-      description = null
-      many        = false
-      required    = false
-      target      = "service"
-      title       = "Service"
-    }
-  ...
-  }
-}
-
-resource "port_blueprint" "service" {
-  ...
-}
-```
-
-3. Run apply
-
-```
-terraform apply
+pulumi import --file ./import_blueprints.json
+## Alternatively, pipe directly into a file
+pulumi import --file ./import_blueprints.json --out generated.ts
 ```
